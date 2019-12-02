@@ -14,7 +14,7 @@ int *read_file() {
   char line[256];
   size_t counter = 0;
   while (fgets(line, sizeof(line), fp)) {
-    module_masses[counter++] = strtoi(line, NULL, 10);
+    module_masses[counter++] = (int)strtol(line, NULL, 10);
   }
   fclose(fp);
   return module_masses;
