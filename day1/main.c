@@ -8,7 +8,7 @@ unsigned int *read_file() {
   FILE *fp;
   if ((fp = fopen(FILENAME, "r")) == NULL) {
     printf("err opening file", stderr);
-    return EXIT_FAILURE;
+    exit(EXIT_FAILURE);
   }
   unsigned int module_masses[INPUT_SIZE];
   char line[256];
