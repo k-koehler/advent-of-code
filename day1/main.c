@@ -20,7 +20,7 @@ int *read_file() {
   return module_masses;
 }
 
-int sgn(int x) { return x >= 0 ? x : 0u; }
+int sgn(int x) { return x >= 0 ? x : 0; }
 
 int calculate_mass(int mass) { return (mass / 3) - 2; }
 
