@@ -27,7 +27,7 @@ int calculate_mass(int mass) { return (mass / 3) - 2; }
 int part1(int *masses) {
   int total_fuel = 0;
   for (size_t i = 0; i < INPUT_SIZE; ++i) {
-    total_fuel += sgn(calculate_mass(masses[i]));
+    total_fuel += calculate_mass(masses[i]);
   }
   return total_fuel;
 }
