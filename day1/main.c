@@ -14,20 +14,20 @@ int *read_file() {
   char line[256];
   size_t counter = 0;
   while (fgets(line, sizeof(line), fp)) {
-    module_masses[counter++] = strtoul(line, NULL, 10);
+    module_masses[counter++] = (int)strtol(line, NULL, 10);
   }
   fclose(fp);
   return module_masses;
 }
 
-int sgn(int x) { return x >= 0 ? x : 0u; }
+int sgn(int x) { return x >= 0 ? x : 0; }
 
 int calculate_mass(int mass) { return (mass / 3) - 2; }
 
 int part1(int *masses) {
   int total_fuel = 0;
   for (size_t i = 0; i < INPUT_SIZE; ++i) {
-    total_fuel += sgn(calculate_mass(masses[i]));
+    total_fuel += calculate_mass(masses[i]);
   }
   return total_fuel;
 }
