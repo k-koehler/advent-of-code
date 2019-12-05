@@ -115,7 +115,6 @@ double *const step_to_vertex(LineSegment **const wire, size_t const wire_size,
 
 Vertex *naive_find_intersect(LineSegment *line1, LineSegment *line2) {
   Vertex *cur;
-  int current_index = 1;
   for (int current_index = 0;
        (cur = iterate_line(line1, current_index)) != NULL; ++current_index) {
     if (lies_on_line(line2, cur)) {
