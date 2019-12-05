@@ -217,6 +217,7 @@ step:;
 cleanup:
   free(wire1);
   free(wire2);
+  free(intersects);
   free(shortest_manhattan_dist);
   free(shortest_step_dist);
   return EXIT_SUCCESS;
