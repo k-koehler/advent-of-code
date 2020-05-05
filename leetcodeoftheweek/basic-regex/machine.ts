@@ -1,20 +1,21 @@
 import State from "./state.ts";
 import Sym from "./sym.ts";
+import List from "./list.ts";
 
 export default class Machine {
-  private transitions: [State, State][];
+  private transitions: List<[State, State]>;
   private currentState: State;
 
   constructor() {
     this.currentState = new State(Sym.startSym());
-    this.transitions = [];
+    this.transitions = new List<[State, State]>();
   }
 
   public addTransition(transition: [State, State]) {
-    this.transitions.push(transition);
+    this.transitions.add(transition);
   }
 
-  public eat(state: State) {
+  public eat(state: State, fail: boolean = true) {
     for (const [s1, s2] of this.transitions)
       if (
         s1.symbol.char === this.currentState.symbol.char &&
@@ -22,16 +23,11 @@ export default class Machine {
       ) {
         return void (this.currentState = s2);
       }
-    return void this.fail();
+    if (fail) return void this.fail();
   }
 
   public get done() {
-    for (const [s1, s2] of this.transitions) {
-      if (this.currentState.symbol.equals(s1.symbol) && s2.symbol.end) {
-        return true;
-      }
-    }
-    return false;
+    return this.eat(new State(Sym.endSym()), false);
   }
 
   private fail() {

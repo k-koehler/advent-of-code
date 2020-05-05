@@ -2,7 +2,6 @@ import StringIterator from "./string-iterator.ts";
 import Machine from "./machine.ts";
 import State from "./state.ts";
 import Sym from "./sym.ts";
-import Char from "./char.ts";
 
 export default class Regex {
   private pattern: string;

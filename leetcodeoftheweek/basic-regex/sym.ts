@@ -1,12 +1,9 @@
 import Char from "./char.ts";
 
-let symId = 0;
-
 export default class Sym {
   public c?: Char;
   public start: boolean;
   public end: boolean;
-  private id: number;
   constructor({
     char,
     start,
@@ -19,7 +16,6 @@ export default class Sym {
     this.c = char;
     this.start = !!start;
     this.end = !!end;
-    this.id = symId++;
   }
 
   public get char() {
