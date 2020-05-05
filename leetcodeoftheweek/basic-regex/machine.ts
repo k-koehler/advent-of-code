@@ -1,36 +1,28 @@
 import State from "./state.ts";
 import Sym from "./sym.ts";
-import List from "./list.ts";
 
 export default class Machine {
-  private transitions: List<[State, State]>;
+  private readonly firstState: State;
   private currentState: State;
 
-  constructor() {
-    this.currentState = new State(Sym.startSym());
-    this.transitions = new List<[State, State]>();
+  constructor(firstState: State) {
+    this.firstState = firstState;
+    this.currentState = firstState;
   }
 
-  public addTransition(transition: [State, State]) {
-    this.transitions.add(transition);
-  }
-
-  public eat(state: State, fail: boolean = true) {
-    for (const [s1, s2] of this.transitions)
-      if (
-        s1.symbol.char === this.currentState.symbol.char &&
-        s2.eat(state.symbol)
-      ) {
-        return void (this.currentState = s2);
-      }
-    if (fail) return void this.fail();
+  public eat(sym: Sym) {
+    if (this.currentState.next !== null && this.currentState.next.eat(sym)) {
+      this.currentState = this.currentState.next;
+      return true;
+    }
+    return false;
   }
 
   public get done() {
-    return this.eat(new State(Sym.endSym()), false);
+    return !!this.currentState.next?.symbol.end;
   }
 
   private fail() {
-    this.currentState = new State(Sym.startSym());
+    this.currentState = this.firstState;
   }
 }

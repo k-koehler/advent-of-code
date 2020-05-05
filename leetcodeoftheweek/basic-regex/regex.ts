@@ -13,29 +13,23 @@ export default class Regex {
   }
 
   private compile() {
-    const machine = new Machine();
-    const it = new StringIterator<State>(
-      this.pattern,
-      (c) => new State(new Sym({ char: c }))
-    );
-    let prev = new State(Sym.startSym());
-    let cur: State | null = null;
-    while (prev && (cur = it.next())) {
-      machine.addTransition([prev, cur]);
-      prev = cur;
+    const firstState = new State(Sym.startSym());
+    const it = new StringIterator(this.pattern, (c) => new Sym({ char: c }));
+    let cur = firstState;
+    for (let s = it.next(); s !== null; s = it.next()) {
+      cur = cur.next = new State(s);
     }
-    machine.addTransition([prev, new State(Sym.endSym())]);
-    return machine;
+    cur.next = new State(Sym.endSym());
+    return new Machine(firstState);
   }
 
   public test(testString: string): boolean {
-    const it = new StringIterator<State>(
-      testString,
-      (c) => new State(new Sym({ char: c }))
-    );
+    const it = new StringIterator(testString, (c) => new Sym({ char: c }));
     for (let s = it.next(); s !== null; s = it.next()) {
       this.machine.eat(s);
-      if (this.machine.done) return true;
+      if (this.machine.done) {
+        return true;
+      }
     }
     return false;
   }
