@@ -1,34 +1,42 @@
-import State, { StateTester } from "./state.ts";
 import StringIterator from "./string-iterator.ts";
+import Machine from "./machine.ts";
+import State from "./state.ts";
+import Sym from "./sym.ts";
+import Char from "./char.ts";
 
 export default class Regex {
   private pattern: string;
-  private beginningState: State;
+  private machine: Machine;
 
   constructor(pattern: string) {
     this.pattern = pattern;
-    this.beginningState = this.compile();
+    this.machine = this.compile();
   }
 
   private compile() {
-    let cur, begin;
-    begin = cur = new State();
-    for (const strchar of this.pattern) {
-      const next = new State([]);
-      cur.test = State.getTester(strchar);
-      console.log(cur.transitions);
-      cur.transitions.push(next);
-      console.log(cur.transitions);
-      cur = next;
+    const machine = new Machine();
+    const it = new StringIterator<State>(
+      this.pattern,
+      (c) => new State(new Sym({ char: c }))
+    );
+    let prev = new State(Sym.startSym());
+    let cur: State | null = null;
+    while (prev && (cur = it.next())) {
+      machine.addTransition([prev, cur]);
+      prev = cur;
     }
-    return begin;
+    machine.addTransition([prev, new State(Sym.endSym())]);
+    return machine;
   }
 
   public test(testString: string): boolean {
-    for (let i = 0; i < testString.length; ++i) {
-      const it = new StringIterator(testString.slice(i));
-      let state: State | null = this.beginningState;
-      while ((state = state.eat(it.next()))) if (state.done) return true;
+    const it = new StringIterator<State>(
+      testString,
+      (c) => new State(new Sym({ char: c }))
+    );
+    for (let s = it.next(); s !== null; s = it.next()) {
+      this.machine.eat(s);
+      if (this.machine.done) return true;
     }
     return false;
   }

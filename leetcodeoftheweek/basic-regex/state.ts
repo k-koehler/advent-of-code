@@ -1,33 +1,22 @@
-import Char from "./char.ts";
-
-export type StateTester = (c: Char) => boolean;
+import Sym from "./sym.ts";
 
 export default class State {
-  public transitions: State[];
-  public test: (c: Char) => boolean;
+  public symbol: Sym;
 
-  constructor(transitions: State[] = [], test?: StateTester) {
-    this.transitions = transitions;
-    this.test = test || (() => true);
+  constructor(symbol: Sym) {
+    this.symbol = symbol;
   }
 
-  public eat(c: Char | null) {
-    if (c === null) return null;
-    for (const transition of this.transitions)
-      if (transition.test(c)) return transition;
-    return null;
-  }
-
-  public get done() {
-    return this.transitions.length === 0;
-  }
-
-  public static getTester(strchar: string): StateTester {
-    switch (strchar) {
-      case ".":
-        return () => true;
+  public eat(s: Sym | null) {
+    if (s === null) return false;
+    if (this.symbol.char === ".") return true;
+    switch (s.char) {
       default:
-        return ({ char }) => char === strchar;
+        return s.char === this.symbol.char;
     }
+  }
+
+  public toString() {
+    return this.symbol.toString();
   }
 }
