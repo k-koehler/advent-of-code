@@ -84,22 +84,22 @@ class Password {
     int cursor = 0;
     char cur;
 
-    String minStr = "";
+    String aStr = "";
     while ((cur = inputString.charAt(cursor++)) != '-') {
-      minStr += cur;
+      aStr += cur;
     }
-    int min = Integer.parseInt(minStr);
+    int a = Integer.parseInt(aStr);
 
-    String maxStr = "";
+    String bStr = "";
     while ((cur = inputString.charAt(cursor++)) != ' ') {
-      maxStr += cur;
+      bStr += cur;
     }
-    int max = Integer.parseInt(maxStr);
+    int b = Integer.parseInt(bStr);
 
     char requiredChar = (cur = inputString.charAt(cursor++));
     String password = inputString.substring(cursor + 2);
 
-    return new Password(requiredChar, min, max, password);
+    return new Password(requiredChar, a, b, password);
   }
 
   public String toString() {
