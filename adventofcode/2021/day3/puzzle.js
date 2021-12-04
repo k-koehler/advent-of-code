@@ -80,12 +80,9 @@ class BitCriteriaHolder {
         break;
       }
     }
-
     return parseInt(this.#candidates[0], 2);
   }
 }
-
-new BitCriteriaHolder(disagnosticReport, "less").solve();
 
 console.log(
   "part2=",
