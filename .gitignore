@@ -2,3 +2,5 @@
 *.run
 a.out
 *.class
+bin/
+obj/
