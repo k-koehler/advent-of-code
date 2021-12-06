@@ -33,7 +33,7 @@ class Simulator {
   }
 
   solution() {
-    return Object.values(this.#state).reduce((acc, cur) => acc + cur, 0);
+    return this.#state.reduce((acc, cur) => acc + cur, 0);
   }
 }
 
