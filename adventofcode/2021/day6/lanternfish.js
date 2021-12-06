@@ -13,23 +13,17 @@ class Simulator {
   #state;
 
   constructor(state) {
-    this.#state = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
+    this.#state = new Array(LANTERNFISH_NEWLY_BORN_TIME_TO_SPAWN + 1).fill(0);
     for (const fish of state) {
       this.#state[fish]++;
     }
   }
 
   next() {
-    const newState = {};
-    for (const [key, value] of Object.entries(this.#state)) {
-      if (key == 0) {
-        continue;
-      }
-      newState[key - 1] = value;
-    }
-    newState[LANTERNFISH_TIME_TO_SPAWN] += this.#state[0];
-    newState[LANTERNFISH_NEWLY_BORN_TIME_TO_SPAWN] = this.#state[0];
-    this.#state = newState;
+    const spawningFish = this.#state[0];
+    this.#state.shift();
+    this.#state.push(spawningFish);
+    this.#state[LANTERNFISH_TIME_TO_SPAWN] += spawningFish;
   }
 
   simulateDays(n) {
