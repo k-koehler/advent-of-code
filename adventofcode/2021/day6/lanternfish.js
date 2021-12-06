@@ -39,12 +39,16 @@ class Simulator {
 
 {
   const simuator = new Simulator(initialState);
+  console.time("part1");
   simuator.simulateDays(80);
+  console.timeEnd("part1");
   console.log("part1=", simuator.solution());
 }
 
 {
   const simuator = new Simulator(initialState);
+  console.time("part2");
   simuator.simulateDays(256);
+  console.timeEnd("part2");
   console.log("part2=", simuator.solution());
 }
