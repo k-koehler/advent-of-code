@@ -20,14 +20,14 @@ class HeightMapPoint {
     return 1 + this.value;
   }
 
-  static basinSize(point, lookup = new Set()) {
-    if (point.value === 9) {
+  basinSize(lookup = new Set()) {
+    if (this.value === 9) {
       return [0, ""];
     }
-    lookup.add(point.id);
-    for (const neighbour of point.neighbours.filter((n) => n.value !== 9)) {
+    lookup.add(this.id);
+    for (const neighbour of this.neighbours.filter((n) => n.value !== 9)) {
       if (!lookup.has(neighbour.id)) {
-        HeightMapPoint.basinSize(neighbour, lookup);
+        neighbour.basinSize(lookup);
       }
     }
     return [lookup.size, Array.from(lookup).sort().join()];
@@ -79,7 +79,7 @@ class HeightMap {
     const basinSizes = [];
     const basinLookups = new Set();
     for (const point of this.#points) {
-      const [size, hash] = HeightMapPoint.basinSize(point);
+      const [size, hash] = point.basinSize();
       if (!basinLookups.has(hash)) {
         basinLookups.add(hash);
         basinSizes.push(size);
