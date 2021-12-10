@@ -14,8 +14,8 @@ class Stack {
 }
 
 const OperandType = {
-  Left: 1,
-  Right: -1,
+  Left: 0,
+  Right: 1,
 };
 
 const TokenType = {
